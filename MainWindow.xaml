@@ -5,8 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Checkbook"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
+        Title="Checkbook" Height="350" Width="525" OpacityMask="Black" Loaded="Window_Loaded">
+    <Grid OpacityMask="Black">
+        <Label Content="Transactions" HorizontalAlignment="Left" VerticalAlignment="Top" OpacityMask="#CC000000" Background="White"/>
+        <ListBox x:Name="lbTransactions" HorizontalAlignment="Left" Height="195" Margin="10,31,0,0" VerticalAlignment="Top" Width="333" OpacityMask="#7F000000" Background="#CCFFFFFF"/>
+        <Label x:Name="lblBalance" Content="" HorizontalAlignment="Left" Margin="235,226,0,0" VerticalAlignment="Top" Background="#CCFFFFFF" Width="108"/>
+        <Label Content="Balance" HorizontalAlignment="Left" Margin="179,226,0,0" VerticalAlignment="Top" Background="White" OpacityMask="#CC000000"/>
+        <Grid.Background>
+            <ImageBrush ImageSource="Images/VesperLake.jpg" Stretch="UniformToFill"/>
+        </Grid.Background>
     </Grid>
 </Window>

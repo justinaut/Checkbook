@@ -20,9 +20,16 @@ namespace Checkbook
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+		TransactionList transactionList = new TransactionList();
 		public MainWindow()
 		{
 			InitializeComponent();
+		}
+
+		private void Window_Loaded(object sender, RoutedEventArgs e)
+		{
+			lbTransactions.ItemsSource = transactionList;
+			lblBalance.Content = transactionList.Balance.ToString("C");
 		}
 	}
 }
