@@ -54,6 +54,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Category.cs" />
+    <Compile Include="CategoryList.cs" />
     <Compile Include="Check.cs" />
     <Compile Include="Debit.cs" />
     <Compile Include="Deposit.cs" />

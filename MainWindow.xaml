@@ -5,14 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Checkbook"
         mc:Ignorable="d"
-        Title="Checkbook" Height="350" Width="525" OpacityMask="Black" Loaded="Window_Loaded">
+        Title="Checkbook" Height="393.2" Width="666" OpacityMask="Black" Loaded="Window_Loaded">
     <Grid OpacityMask="Black">
-        <Label Content="Transactions" HorizontalAlignment="Left" VerticalAlignment="Top" OpacityMask="#CC000000" Background="White"/>
-        <ListBox x:Name="lbTransactions" HorizontalAlignment="Left" Height="195" Margin="10,31,0,0" VerticalAlignment="Top" Width="333" OpacityMask="#7F000000" Background="#CCFFFFFF"/>
-        <Label x:Name="lblBalance" Content="" HorizontalAlignment="Left" Margin="235,226,0,0" VerticalAlignment="Top" Background="#CCFFFFFF" Width="108"/>
-        <Label Content="Balance" HorizontalAlignment="Left" Margin="179,226,0,0" VerticalAlignment="Top" Background="White" OpacityMask="#CC000000"/>
+        <Label Content="Transactions" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold" FontSize="14" Margin="10,2,0,0"/>
+        <ListBox x:Name="lbTransactions" HorizontalAlignment="Left" Height="321" Margin="10,31,0,0" VerticalAlignment="Top" Width="333" FontSize="14" Background="Transparent" BorderBrush="Transparent"/>
+        <Label x:Name="lblBalance" Content="" HorizontalAlignment="Left" Margin="232,2,0,0" VerticalAlignment="Top" Width="108" FontWeight="Bold" FontSize="14" Opacity="0.8"/>
+        <Label Content="Balance" HorizontalAlignment="Left" Margin="166,2,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="14" />
+        <ListBox x:Name="lbCategories" HorizontalAlignment="Left" Height="321" Margin="348,31,0,0" VerticalAlignment="Top" Width="295" FontSize="14" Background="Transparent" BorderBrush="Transparent"/>
+        <Label Content="Categories" HorizontalAlignment="Left" Margin="348,2,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="14"/>
         <Grid.Background>
-            <ImageBrush ImageSource="Images/VesperLake.jpg" Stretch="UniformToFill"/>
+            <ImageBrush ImageSource="Images/VesperLake.jpg" Stretch="UniformToFill" Opacity="1"/>
         </Grid.Background>
     </Grid>
 </Window>

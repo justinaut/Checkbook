@@ -21,6 +21,8 @@ namespace Checkbook
 	public partial class MainWindow : Window
 	{
 		TransactionList transactionList = new TransactionList();
+		CategoryList categoryList;
+
 		public MainWindow()
 		{
 			InitializeComponent();
@@ -30,6 +32,8 @@ namespace Checkbook
 		{
 			lbTransactions.ItemsSource = transactionList;
 			lblBalance.Content = transactionList.Balance.ToString("C");
+			categoryList = new CategoryList(transactionList);
+			lbCategories.ItemsSource = categoryList;
 		}
 	}
 }
