@@ -20,8 +20,8 @@ namespace Checkbook
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		TransactionList transactionList = new TransactionList();
-		CategoryList categoryList;
+		TransactionList _transactionList = new TransactionList();
+		CategoryList _categoryList;
 
 		public MainWindow()
 		{
@@ -30,17 +30,17 @@ namespace Checkbook
 
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
-			lbTransactions.ItemsSource = transactionList;
-			lblBalance.Content = transactionList.Balance.ToString("C");
-			categoryList = new CategoryList(transactionList);
-			lbCategories.ItemsSource = categoryList;
+			lbTransactions.ItemsSource = _transactionList;
+			lblBalance.Content = _transactionList.Balance.ToString("C");
+			_categoryList = new CategoryList(_transactionList);
+			lbCategories.ItemsSource = _categoryList;
 		}
 
 		private void lbTransactions_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			if (lbTransactions.SelectedIndex < 0) lbTransactions.SelectedIndex = 0;
 			int index = lbTransactions.SelectedIndex;
-			Transaction tr = transactionList[index];
+			Transaction tr = _transactionList[index];
 			tbId.Text = tr.Id.ToString();
 			tbType.Text = tr.Type.ToString();
 			tbDescription.Text = tr.Description;
@@ -49,6 +49,23 @@ namespace Checkbook
 			tbAmount.Text = tr.Amount.ToString("C");
 			tbCategory.Text = tr.Category;
 			tbCheckNum.Text = tr.Checknum;
+		}
+
+		private void btnEdit_Click(object sender, RoutedEventArgs e)
+		{
+			if (lbTransactions.SelectedIndex > 0)
+			{
+				Transaction selectedTransaction = _transactionList[lbTransactions.SelectedIndex];
+				EditTransaction editTransactionWindow = new EditTransaction(selectedTransaction, _categoryList);
+
+				if (editTransactionWindow.ShowDialog() ?? false)
+				{
+					lbTransactions.Items.Refresh();
+					_categoryList.Refresh();
+					lbCategories.Items.Refresh();
+					lbTransactions_SelectionChanged(null, null);
+				}
+			}
 		}
 	}
 }
