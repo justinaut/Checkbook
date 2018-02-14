@@ -2,63 +2,61 @@
 
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.ComponentModel;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Checkbook
 {
 	public enum TransactionType { Check, Debit, Deposit }
 
-	abstract public class Transaction
+	abstract public class Transaction : INotifyPropertyChanged
 	{
-		private int id; // Transaction ID
-		private TransactionType type; // Type of transaction
-		private string category; // Category (Budget)
-		private DateTime date; // Date of transaction
-		private string description; // Paid to, taken from...
-		private decimal amount; // The amount (always >0)
-		private string checknum; // Check # if appropriate
+		private int _id; // Transaction ID
+		private TransactionType _type; // Type of transaction
+		private string _category; // Category (Budget)
+		private DateTime _date; // Date of transaction
+		private string _description; // Paid to, taken from...
+		private decimal _amount; // The amount (always >0)
+		private string _checknum; // Check # if appropriate
 
 		public int Id
 		{
-			get { return id; }
-			private set { id = value; }
+			get { return _id; }
+			private set { _id = value; }
 		}
 		public TransactionType Type
 		{
-			get { return type; }
-			set { type = value; }
+			get { return _type; }
+			set { _type = value; }
 		}
 		public string Category
 		{
-			get { return category; }
-			set { category = value; }
+			get { return _category; }
+			set { _category = value; }
 		}
 		public DateTime Date
 		{
-			get { return date; }
-			set { date = value; }
+			get { return _date; }
+			set { _date = value; }
 		}
 		public string Description
 		{
-			get { return description; }
-			set { description = value; }
+			get { return _description; }
+			set { _description = value; }
 		}
 		public decimal Amount
 		{
-			get { return amount; }
-			set { amount = value; }
+			get { return _amount; }
+			set { _amount = value; }
 		}
 		public string Checknum
 		{
-			get { return checknum; }
-			set { checknum = value; }
+			get { return _checknum; }
+			set { _checknum = value; }
 		}
 
-		private static int lastId = 0;
-		int nextId() { return ++lastId; }
+		private static int LastId = 0;
+		int NextId() { return ++LastId; }
 
 		public override string ToString()
 		{
@@ -70,7 +68,7 @@ namespace Checkbook
 		public Transaction(DateTime dateTime, TransactionType type, string
 		  description, string category, decimal amount, string checknum = "")
 		{
-			id = nextId();
+			_id = NextId();
 			Date = dateTime;
 			Type = type;
 			Description = description;
@@ -89,14 +87,14 @@ namespace Checkbook
 				StringBuilder strAmt = new StringBuilder();
 				int dollars = (int)Amount;
 				int cents = (int)(Amount * 100 % 100);
-				strAmt.Append(amtToString(dollars) + " and " + amtToString(cents, true) + "/100s Dollars");
+				strAmt.Append(AmtToString(dollars) + " and " + AmtToString(cents, true) + "/100s Dollars");
 				strAmt[0] = char.ToUpper(strAmt[0]);
 				return strAmt.ToString();
 			}
 		}
 
 		// Return dollars in text ("Three hundred seventy two"), or if useDigits, return "372" 
-		private string amtToString(int amt, bool useDigits = false)
+		private string AmtToString(int amt, bool useDigits = false)
 		{
 			if (amt == 0) return (useDigits ? "00" : "zero");     // If amount is zero, no need to go further
 			if (useDigits) return amt.ToString();                 // If using digits return just the digits
@@ -131,36 +129,36 @@ namespace Checkbook
 			if (amt >= 100)                       // Do we need a "hundreds" value for this number
 			{
 				int h = amt / 100;                  // Yes. Strip out the hundreds from the rest of the nbr
-				numberToString(h, strAmt);           // Add the hundreds value
-				appendWithSpace(strAmt, "hundred");
+				NumberToString(h, strAmt);           // Add the hundreds value
+				AppendWithSpace(strAmt, "hundred");
 				amt = amt % 100;                    // Remove what we've already printed
 			}
-			numberToString(amt, strAmt);          // Print the remaining value along with the grouping
-			appendWithSpace(strAmt, label[group]);
+			NumberToString(amt, strAmt);          // Print the remaining value along with the grouping
+			AppendWithSpace(strAmt, label[group]);
 			return;
 		}
 
 		// Convert a number (0-999) to a string.
 		// Params: amt = The number to convert
 		//         strAmt = The StringBuilder where the string value should be added
-		private void numberToString(int amt, StringBuilder strAmt)
+		private void NumberToString(int amt, StringBuilder strAmt)
 		{
 			String[] nums = { "", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen" };
 			String[] tens = { "", "ten", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety" };
 
 			if (amt < 20)       // We have special cases for numbers under twenty
 			{
-				appendWithSpace(strAmt, nums[amt]);
+				AppendWithSpace(strAmt, nums[amt]);
 			}
 			else          // Otherwise use the tens grouping and the remaining number (like sixty five)
 			{
-				appendWithSpace(strAmt, tens[amt / 10]);
-				appendWithSpace(strAmt, nums[amt % 10]);
+				AppendWithSpace(strAmt, tens[amt / 10]);
+				AppendWithSpace(strAmt, nums[amt % 10]);
 			}
 		}
 
 		// Append a string to the StringBuilder, adding a space first if there's any existing text
-		private void appendWithSpace(StringBuilder sb, String s)
+		private void AppendWithSpace(StringBuilder sb, String s)
 		{
 			if (s.Length == 0) return;              // If no text to append, return
 			if (sb.Length > 0) sb.Append(" ");      // If there's any existing text, add a space

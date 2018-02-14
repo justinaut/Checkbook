@@ -20,7 +20,7 @@ namespace Checkbook
 
 		public int CompareTo(Category other)
 		{
-			return this.Title.CompareTo(other.Title);
+			return string.CompareOrdinal(Title, other.Title);
 		}
 
 		public override string ToString()
