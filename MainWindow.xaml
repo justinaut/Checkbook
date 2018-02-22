@@ -5,13 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Checkbook"
         mc:Ignorable="d"
+        x:Name="Checkbook"
         Title="Checkbook" Height="440.2" Width="666" OpacityMask="Black" Loaded="Window_Loaded">
     <Grid OpacityMask="Black">
         <Label Content="Transactions" HorizontalAlignment="Left" VerticalAlignment="Top" FontWeight="Bold" FontSize="14" Margin="10,2,0,0"/>
-        <ListBox x:Name="lbTransactions" HorizontalAlignment="Left" Height="192" Margin="10,31,0,0" VerticalAlignment="Top" Width="333" FontSize="14" Background="Transparent" BorderBrush="Transparent" SelectionChanged="lbTransactions_SelectionChanged"/>
-        <Label x:Name="lblBalance" Content="" HorizontalAlignment="Left" Margin="232,2,0,0" VerticalAlignment="Top" Width="108" FontWeight="Bold" FontSize="14" Opacity="0.8"/>
+        <ListBox x:Name="lbTransactions" SelectedItem="{Binding ElementName=Checkbook, Path=SelectedTransaction, Mode=TwoWay}" ItemsSource="{Binding ElementName=Checkbook, Path=Transactions, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="TransactionSummary" HorizontalAlignment="Left" Height="192" Margin="10,31,0,0" VerticalAlignment="Top" Width="333" FontSize="14" Background="Transparent" BorderBrush="Transparent" SelectionChanged="lbTransactions_SelectionChanged"/>
+        <Label x:Name="lblBalance" HorizontalAlignment="Left" Margin="232,2,0,0" VerticalAlignment="Top" Width="108" FontWeight="Bold" Opacity="0.8" Height="24"/>
         <Label Content="Balance" HorizontalAlignment="Left" Margin="166,2,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="14" />
-        <ListBox x:Name="lbCategories" HorizontalAlignment="Left" Height="192" Margin="348,31,0,0" VerticalAlignment="Top" Width="295" FontSize="14" Background="Transparent" BorderBrush="Transparent"/>
+        <ListBox x:Name="lbCategories" ItemsSource="{Binding ElementName=Checkbook,Path=Categories, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="192" Margin="348,31,0,0" VerticalAlignment="Top" Width="295" FontSize="14" Background="Transparent" BorderBrush="Transparent"/>
         <Label Content="Categories" HorizontalAlignment="Left" Margin="348,2,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="14"/>
         <GroupBox Header="Transaction" HorizontalAlignment="Left" Height="168" Margin="10,228,0,0" VerticalAlignment="Top" Width="638"  FontWeight="Bold" FontSize="14">
             <Grid HorizontalAlignment="Left" Height="148" Margin="10,10,0,-12" VerticalAlignment="Top" Width="613">
@@ -19,17 +20,17 @@
                 <Label Content="Type" HorizontalAlignment="Left" Margin="315,8,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="14"/>
                 <Label Content="Date" HorizontalAlignment="Left" Margin="125,8,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="14"/>
                 <Label Content="Category" HorizontalAlignment="Left" Margin="10,75,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="14"/>
-                <TextBox x:Name="tbId" HorizontalAlignment="Left" Height="23" Margin="40,11,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="49" IsReadOnly="True" Background="Transparent"/>
-                <TextBox x:Name="tbType" HorizontalAlignment="Left" Height="23" Margin="361,11,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="85" IsReadOnly="True" Background="Transparent"/>
-                <TextBox x:Name="tbDate" HorizontalAlignment="Left" Height="23" Margin="171,11,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="128" IsReadOnly="True" Background="Transparent"/>
-                <TextBox x:Name="tbCategory" HorizontalAlignment="Left" Height="23" Margin="85,78,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" IsReadOnly="True" Background="Transparent"/>
+                <TextBox x:Name="tbId" Text="{Binding ElementName=Checkbook, Path=SelectedTransaction.Id, Mode=OneWay}" HorizontalAlignment="Left" Height="23" Margin="40,11,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="49" IsReadOnly="True" Background="Transparent"/>
+                <TextBox x:Name="tbType" Text="{Binding ElementName=Checkbook, Path=SelectedTransaction.Type}" HorizontalAlignment="Left" Height="23" Margin="361,11,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="85" IsReadOnly="True" Background="Transparent"/>
+                <TextBox x:Name="tbDate" Text="{Binding ElementName=Checkbook, Path=SelectedTransaction.Date}" HorizontalAlignment="Left" Height="23" Margin="171,11,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="128" IsReadOnly="True" Background="Transparent"/>
+                <TextBox x:Name="tbCategory" Text="{Binding ElementName=Checkbook, Path=SelectedTransaction.Category}" HorizontalAlignment="Left" Height="23" Margin="85,78,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" IsReadOnly="True" Background="Transparent"/>
                 <Label Content="Amount" HorizontalAlignment="Left" Margin="450,42,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="14"/>
                 <Label Content="Description" HorizontalAlignment="Left" Margin="213,75,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.553,0.5" FontWeight="Bold" FontSize="14"/>
-                <TextBox x:Name="tbAmount" HorizontalAlignment="Left" Height="23" Margin="519,48,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="84" IsReadOnly="True" Background="Transparent"/>
-                <TextBox x:Name="tbDescription" HorizontalAlignment="Left" Height="23" Margin="304,78,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="299" IsReadOnly="True" Background="Transparent"/>
+                <TextBox x:Name="tbAmount" Text="{Binding ElementName=Checkbook, Path=SelectedTransaction.Amount}" HorizontalAlignment="Left" Height="23" Margin="519,48,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="84" IsReadOnly="True" Background="Transparent"/>
+                <TextBox x:Name="tbDescription" Text="{Binding ElementName=Checkbook, Path=SelectedTransaction.Description}" HorizontalAlignment="Left" Height="23" Margin="304,78,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="299" IsReadOnly="True" Background="Transparent"/>
                 <Label Content="Check Num" HorizontalAlignment="Left" Margin="452,8,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="14"/>
-                <TextBox x:Name="tbCheckNum" HorizontalAlignment="Left" Height="23" Margin="543,11,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="60" IsReadOnly="True" Background="Transparent"/>
-                <Label x:Name="lblAmountString" Content="" HorizontalAlignment="Left" Margin="10,44,0,0" VerticalAlignment="Top" Width="430" FontWeight="Bold" FontSize="14"/>
+                <TextBox x:Name="tbCheckNum" Text="{Binding ElementName=Checkbook, Path=SelectedTransaction.Checknum}" HorizontalAlignment="Left" Height="23" Margin="543,11,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="60" IsReadOnly="True" Background="Transparent"/>
+                <Label x:Name="lblAmountString" Content="{Binding ElementName=Checkbook, Path=SelectedTransaction.AmountString}" HorizontalAlignment="Left" Margin="10,39,0,0" VerticalAlignment="Top" Width="430" FontWeight="Bold" FontSize="14" Height="31"/>
                 <Button x:Name="btnEdit" Content="Edit" HorizontalAlignment="Left" Margin="10,109,0,0" VerticalAlignment="Top" Width="75" Click="btnEdit_Click"/>
             </Grid>
         </GroupBox>

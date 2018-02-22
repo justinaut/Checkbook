@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Checkbook
 {
-    public class CategoryList : List<Category>
+    public class CategoryList : ObservableCollection<Category>
     {
 		private TransactionList _transactionList;
 
@@ -14,17 +15,11 @@ namespace Checkbook
 
 		public  void Refresh()
 		{
-			// Clear Categories List
 			Clear();
-
-			// Add Categories from Transactions
 			foreach (Transaction t in _transactionList)
 			{
 				AddTransaction(t);
 			}
-
-			// Sort Categories
-			Sort();
 		}
 
 		/// <summary>

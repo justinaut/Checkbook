@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,10 +19,20 @@ namespace Checkbook
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml
 	/// </summary>
-	public partial class MainWindow : Window
+	public partial class MainWindow : Window, INotifyPropertyChanged
 	{
 		TransactionList _transactionList = new TransactionList();
 		CategoryList _categoryList;
+		Transaction _selectedtransaction;
+
+		public event PropertyChangedEventHandler PropertyChanged;
+		private void NotifyChanged(string property)
+		{
+			if (PropertyChanged != null)
+			{
+				PropertyChanged.Invoke(this, new PropertyChangedEventArgs(property));
+			}
+		}
 
 		public MainWindow()
 		{
@@ -30,41 +41,61 @@ namespace Checkbook
 
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
-			lbTransactions.ItemsSource = _transactionList;
 			lblBalance.Content = _transactionList.Balance.ToString("C");
-			_categoryList = new CategoryList(_transactionList);
-			lbCategories.ItemsSource = _categoryList;
 		}
 
 		private void lbTransactions_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			if (lbTransactions.SelectedIndex < 0) lbTransactions.SelectedIndex = 0;
-			int index = lbTransactions.SelectedIndex;
-			Transaction tr = _transactionList[index];
-			tbId.Text = tr.Id.ToString();
-			tbType.Text = tr.Type.ToString();
-			tbDescription.Text = tr.Description;
-			tbDate.Text = tr.Date.ToShortDateString();
-			lblAmountString.Content = tr.AmountString;
-			tbAmount.Text = tr.Amount.ToString("C");
-			tbCategory.Text = tr.Category;
-			tbCheckNum.Text = tr.Checknum;
+			SelectedTransaction = _transactionList[lbTransactions.SelectedIndex];
+			tbId.Text = SelectedTransaction.Id.ToString();
+			tbType.Text = SelectedTransaction.Type.ToString();
+			tbDescription.Text = SelectedTransaction.Description;
+			tbDate.Text = SelectedTransaction.Date.ToShortDateString();
+			lblAmountString.Content = SelectedTransaction.AmountString;
+			tbAmount.Text = SelectedTransaction.Amount.ToString("C");
+			tbCategory.Text = SelectedTransaction.Category;
+			tbCheckNum.Text = SelectedTransaction.Checknum;
 		}
 
 		private void btnEdit_Click(object sender, RoutedEventArgs e)
 		{
-			if (lbTransactions.SelectedIndex > 0)
+			if (lbTransactions.SelectedItem != null)
 			{
-				Transaction selectedTransaction = _transactionList[lbTransactions.SelectedIndex];
-				EditTransaction editTransactionWindow = new EditTransaction(selectedTransaction, _categoryList);
-
+				EditTransaction editTransactionWindow = new EditTransaction(SelectedTransaction, Categories);
 				if (editTransactionWindow.ShowDialog() ?? false)
 				{
-					lbTransactions.Items.Refresh();
-					_categoryList.Refresh();
-					lbCategories.Items.Refresh();
-					lbTransactions_SelectionChanged(null, null);
+					Categories.Refresh();
+					lblBalance.Content = _transactionList.Balance.ToString("C");
 				}
+			}
+		}
+
+		public TransactionList Transactions
+		{
+			get { return _transactionList; }
+			set { _transactionList = value; }
+		}
+
+		public Transaction SelectedTransaction
+		{
+			get { return _selectedtransaction; }
+			set { _selectedtransaction = value; NotifyChanged("SelectedTransaction"); }
+		}
+
+		public CategoryList Categories
+		{
+			get {
+				if (_categoryList == null)
+				{
+					_categoryList = new CategoryList(Transactions);
+				}
+				return _categoryList;
+			}
+			set {
+				_categoryList = value;
+				_categoryList.Refresh();
+				NotifyChanged("Categories");
 			}
 		}
 	}

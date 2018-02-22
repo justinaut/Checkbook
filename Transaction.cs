@@ -19,40 +19,56 @@ namespace Checkbook
 		private decimal _amount; // The amount (always >0)
 		private string _checknum; // Check # if appropriate
 
+		public event PropertyChangedEventHandler PropertyChanged;
+		private void NotifyChanged(string property)
+		{
+			if (PropertyChanged != null)
+			{
+				PropertyChanged.Invoke(this, new PropertyChangedEventArgs(property));
+			}
+		}
+
 		public int Id
 		{
 			get { return _id; }
-			private set { _id = value; }
+			// set for Id was private but it interfered with the binding mode
+			private set { _id = value; NotifyChanged("Id"); }
 		}
 		public TransactionType Type
 		{
 			get { return _type; }
-			set { _type = value; }
+			set { _type = value; NotifyChanged("Type"); NotifyChanged("TransactionSummary"); }
 		}
 		public string Category
 		{
 			get { return _category; }
-			set { _category = value; }
+			set { _category = value; NotifyChanged("Category"); }
 		}
 		public DateTime Date
 		{
 			get { return _date; }
-			set { _date = value; }
+			set { _date = value; NotifyChanged("Date"); NotifyChanged("TransactionSummary"); }
 		}
 		public string Description
 		{
 			get { return _description; }
-			set { _description = value; }
+			set { _description = value; NotifyChanged("Description"); }
 		}
 		public decimal Amount
 		{
 			get { return _amount; }
-			set { _amount = value; }
+			set {
+				_amount = value;
+				NotifyChanged("Amount");
+				NotifyChanged("AmountString");
+				NotifyChanged("CalculationAmount");
+				NotifyChanged("TransactionSummary");
+			}
 		}
 		public string Checknum
 		{
 			get { return _checknum; }
-			set { _checknum = value; }
+			set { _checknum = value; NotifyChanged("Checknum"); }
 		}
 
 		private static int LastId = 0;

@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Checkbook
 {
-	public class TransactionList : List<Transaction>
+	public class TransactionList : ObservableCollection<Transaction>
 	{
 		public TransactionList()
 		{
@@ -30,7 +31,6 @@ namespace Checkbook
 			}
 		}
 
-		#region GetTransactionsPrototypeArea
 		private void AddTransactions()
 		{
 			Regex TransactionPattern = new Regex(@"<Transaction>(.*?)<\/Transaction>");
@@ -52,19 +52,15 @@ namespace Checkbook
 					t = new Debit(Date, Description, Category, Amount);
 					base.Add(t);
 				}
-				else if (Type.Equals("Deposit", StringComparison.InvariantCultureIgnoreCase))
+				if (Type.Equals("Deposit", StringComparison.InvariantCultureIgnoreCase))
 				{
 					t = new Deposit(Date, Description, Category, Amount);
 					base.Add(t);
 				}
-				else if (Type.Equals("Check", StringComparison.InvariantCultureIgnoreCase))
+				if (Type.Equals("Check", StringComparison.InvariantCultureIgnoreCase))
 				{
 					t = new Check(Date, Description, Category, Amount, CheckNum);
 					base.Add(t);
-				}
-				else
-				{
-					// error situation?
 				}
 			}
 		}
@@ -80,6 +76,5 @@ namespace Checkbook
 			Match match = pattern.Match(content.ToString());
 			return match.Groups[1].ToString();
 		}
-		#endregion
 	}
 }
