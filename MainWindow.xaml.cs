@@ -48,14 +48,6 @@ namespace Checkbook
 		{
 			if (lbTransactions.SelectedIndex < 0) lbTransactions.SelectedIndex = 0;
 			SelectedTransaction = _transactionList[lbTransactions.SelectedIndex];
-			tbId.Text = SelectedTransaction.Id.ToString();
-			tbType.Text = SelectedTransaction.Type.ToString();
-			tbDescription.Text = SelectedTransaction.Description;
-			tbDate.Text = SelectedTransaction.Date.ToShortDateString();
-			lblAmountString.Content = SelectedTransaction.AmountString;
-			tbAmount.Text = SelectedTransaction.Amount.ToString("C");
-			tbCategory.Text = SelectedTransaction.Category;
-			tbCheckNum.Text = SelectedTransaction.Checknum;
 		}
 
 		private void btnEdit_Click(object sender, RoutedEventArgs e)
