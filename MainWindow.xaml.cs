@@ -59,6 +59,9 @@ namespace Checkbook
 				{
 					Categories.Refresh();
 					lblBalance.Content = _transactionList.Balance.ToString("C");
+
+					string connectionString = "Data Source=.; Integrated Security=True; Initial Catalog=Checkbook";
+					TransactionList.SaveTransaction(connectionString, SelectedTransaction);
 				}
 			}
 		}

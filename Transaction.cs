@@ -180,6 +180,5 @@ namespace Checkbook
 			if (sb.Length > 0) sb.Append(" ");      // If there's any existing text, add a space
 			sb.Append(s);                           // Append the text to the stringBuilder
 		}
-
 	}
 }
